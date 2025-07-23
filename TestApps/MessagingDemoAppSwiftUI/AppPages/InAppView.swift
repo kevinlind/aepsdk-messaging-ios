@@ -163,6 +163,14 @@ private class MessageHandler: MessagingDelegate {
         let fullscreenMessage = message as? FullscreenMessage
         let message = fullscreenMessage?.parent
 
+        // Test KVPs
+        if let kvps = message?.metadata as? [String: Any] {
+            print("message metadata: \(kvps)")
+
+            let event = ExperienceEvent(xdm: ["eventType": "messaging.bugbash"], data: kvps)
+            Edge.sendEvent(experienceEvent: event)
+        }
+
         // in-line handling of javascript calls
         // see Assets/nativeMethodCallingSample.html for an example of how to call this method
         message?.handleJavascriptMessage("buttonClicked") { content in
